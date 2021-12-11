@@ -19,8 +19,8 @@ class World(mesa.Model):
         super().__init__()
 
         # Initialize world parameters
-        self.schedule = mesa.time.SimultaneousActivation(self)
-        self.grid = mesa.space.SingleGrid(width, 1, torus=True)
+        self.schedule: mesa.time.SimultaneousActivation = mesa.time.SimultaneousActivation(self)
+        self.grid: mesa.space.SingleGrid = mesa.space.SingleGrid(width, 1, torus=True)
 
         # Initialize agents
         if amount_of_agents > width:
@@ -29,7 +29,7 @@ class World(mesa.Model):
         agent_locations: np.ndarray = np.linspace(0, width, amount_of_agents, endpoint=False).astype(int)
 
         for loc in agent_locations:
-            a = agent.Car(self)
+            a: agent.Car = agent.Car(self)
             self.grid.place_agent(a, (loc, 0))
 
     def step(self) -> None:
