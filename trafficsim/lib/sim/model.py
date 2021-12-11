@@ -15,15 +15,18 @@ class World(mesa.Model):
 
     Attributes:
         schedule: mesa scheduler that activates the correct agent methods to run the simulation.
-        grid: the grid (currently 1D) that agents are placed on."""
+        grid: the grid (currently 1D) that agents are placed on.
+        max_speed: maximum speed cars are allowed to travel at."""
 
     def __init__(self, width: int,
-                 amount_of_agents: int) -> None:
+                 amount_of_agents: int,
+                 max_speed: int) -> None:
         """Initialize class instance, and it's agents.
 
         Args:
             width: width of the lane.
             amount_of_agents: amount of Car agents to place on the grid.
+            max_speed: max_speed attribute.
 
         Raises:
             ValueError if amount_of_agents exceeds width."""
@@ -32,6 +35,7 @@ class World(mesa.Model):
         # Initialize world parameters
         self.schedule: mesa.time.SimultaneousActivation = mesa.time.SimultaneousActivation(self)
         self.grid: mesa.space.SingleGrid = mesa.space.SingleGrid(width, 1, torus=True)
+        self.max_speed: int = max_speed
 
         # Initialize agents
         if amount_of_agents > width:
