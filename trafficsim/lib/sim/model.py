@@ -41,6 +41,7 @@ class World(mesa.Model):
 
         for loc in agent_locations:
             a: agent.Car = agent.Car(self)
+            self.schedule.add(a)
             self.grid.place_agent(a, (loc, 0))
 
     def step(self) -> None:
