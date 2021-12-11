@@ -5,7 +5,7 @@ import mesa.time
 import mesa.space
 import numpy as np
 
-import agent
+from trafficsim.lib.sim import agent
 
 
 class World(mesa.Model):
