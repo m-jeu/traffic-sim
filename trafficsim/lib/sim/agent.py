@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from trafficsim.lib.sim import model
+    from ..sim import model  # TODO(m-jeu): Check whether these imports make sense.
 
 import mesa
 

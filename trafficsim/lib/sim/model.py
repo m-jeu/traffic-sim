@@ -5,7 +5,7 @@ import mesa.time
 import mesa.space
 import numpy as np
 
-from trafficsim.lib.sim import agent
+from ..sim import agent  # TODO(m-jeu): Check whether these imports make sense.
 
 
 class World(mesa.Model):
