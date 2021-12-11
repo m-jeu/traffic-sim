@@ -9,13 +9,24 @@ import agent
 
 
 class World(mesa.Model):
-    """A world, in which vehicles move.
+    """A world, in which vehicles move according to the Nagel-Schreckenberg Model.
 
-    Whether this is a lane, or a road, is yet to be determined."""
+    Currently represents one lane of traffic, might be expanded in the future.
+
+    Attributes:
+        schedule: mesa scheduler that activates the correct agent methods to run the simulation.
+        grid: the grid (currently 1D) that agents are placed on."""
 
     def __init__(self, width: int,
                  amount_of_agents: int) -> None:
-        """Initialize class instance."""
+        """Initialize class instance, and it's agents.
+
+        Args:
+            width: width of the lane.
+            amount_of_agents: amount of Car agents to place on the grid.
+
+        Raises:
+            ValueError if amount_of_agents exceeds width."""
         super().__init__()
 
         # Initialize world parameters
@@ -33,6 +44,7 @@ class World(mesa.Model):
             self.grid.place_agent(a, (loc, 0))
 
     def step(self) -> None:
+        """Continue the simulation by one tick."""
         raise NotImplementedError()
 
     def visualize(self) -> None:
