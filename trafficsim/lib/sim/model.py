@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-
 import mesa
 import mesa.time
 import mesa.space
@@ -33,6 +32,8 @@ class World(mesa.Model):
             a = agent.Car(self)
             self.grid.place_agent(a, (loc, 0))
 
-
     def step(self) -> None:
+        raise NotImplementedError()
+
+    def visualize(self) -> None:
         raise NotImplementedError()
