@@ -1,3 +1,6 @@
+from __future__ import annotations
+
+
 import mesa
 import mesa.time
 import mesa.space
@@ -14,6 +17,7 @@ class World(mesa.Model):
     def __init__(self, width: int,
                  amount_of_agents: int) -> None:
         """Initialize class instance."""
+        super().__init__()
 
         # Initialize world parameters
         self.schedule = mesa.time.SimultaneousActivation(self)

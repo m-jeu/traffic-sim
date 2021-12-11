@@ -1,6 +1,11 @@
-import mesa
+from __future__ import annotations
 
-import model
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    import model
+
+import mesa
 
 
 class Car(mesa.Agent):
