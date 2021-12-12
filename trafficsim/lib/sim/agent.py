@@ -26,7 +26,12 @@ class Car(mesa.Agent):
         if self.velocity < self.model.max_velocity:
             self.velocity += 1
 
-        # 3 Speed of all cars that have a velocity of at least 1, is now reduced by one unit with a probability of p.
+        # 2. Slowing down: If the distance is smaller than the velocity, the velocity is reduced to the distance.
+        distance = self.perceive()
+        if distance is not None and distance < self.velocity:
+            self.velocity = distance
+
+        # 3. Speed of all cars that have a velocity of at least 1, is now reduced by one unit with a probability of p.
         if self.p_breaking >= self.model.random.uniform(0, 1):
             self.velocity -= 1
 
