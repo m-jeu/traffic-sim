@@ -31,9 +31,15 @@ class Car(mesa.Agent):
         """Actually apply changes staged by Car.step()."""
         self.model.grid.move_agent(self, (self.pos[0]+self.velocity, self.pos[1]))
 
-    def perceive(self) -> None:
+    def perceive(self) -> None:  # TODO(m-jeu): Untested!
         """Perceive the environment, in front of the car."""
-        raise NotImplementedError()
+        x_self, _ = self.pos
+        coords = [(x, 0) for x in range(x_self + 1, x_self + self.velocity)]
+        position_is_empty = enumerate(map(lambda c: self.model.grid.is_cell_empty(c), coords))
+        for dist, is_empty in position_is_empty:
+            if not is_empty:
+                return dist
+        return None
 
     def act(self) -> None:
         """Apply the information from perceive, and take an action according to it."""
