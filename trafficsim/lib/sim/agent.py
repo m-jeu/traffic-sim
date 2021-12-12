@@ -12,9 +12,7 @@ class Car(mesa.Agent):
     """A Car (agent), which represents a car according to the Nagel-Schreckenberg Model.
 
     Attributes:
-        model: The simulation which the car lives in.
-        grid: The velocity (speed) of the car.
-        p_brake: The probability of braking without reason.
+        velocity: The velocity (speed) of the car.
         color: The color of a car in RGB format.
     """
 
@@ -22,7 +20,7 @@ class Car(mesa.Agent):
         """Initialize class instance.
 
         Args:
-            m: The simulation which the car lives in.
+            m: The model/simulation which the car lives in.
             p_brake: The probability of braking without reason.
         """
         super().__init__(m.next_id(), m)
