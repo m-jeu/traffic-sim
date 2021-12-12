@@ -9,7 +9,7 @@ def agent_portrayal(agent):
         "Shape": "rect",
         "Filled": "true",
         "Layer": 0,
-        "Color": "red",
+        "Color": f"rgb{agent.color}",
         "w": 1,
         "h": 1
     }

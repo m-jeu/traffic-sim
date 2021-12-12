@@ -20,6 +20,9 @@ class Car(mesa.Agent):
         self.velocity: int = 0  # speed
         self.p_breaking: float = p_brake  # probability of braking
 
+        # temporary color to distinguish cars in the simulation
+        self.color = tuple([self.model.random.randint(0, 255) for i in range(3)])
+
     def step(self) -> None:
         """Apply logic (like perceive) and stage changes for the next tick."""
         # 1. Acceleration: Cars not at the maximum velocity have their velocity increased by one unit.
