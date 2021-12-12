@@ -23,9 +23,13 @@ class Car(mesa.Agent):
 
     def step(self) -> None:
         """Apply logic (like perceive) and stage changes for the next tick."""
-        # 1
+        # 1. Acceleration: Cars not at the maximum velocity have their velocity increased by one unit.
         if self.velocity < self.model.max_velocity:
             self.velocity += 1
+
+        # 3 Speed of all cars that have a velocity of at least 1, is now reduced by one unit with a probability of p.
+        if self.p_breaking >= self.model.random.uniform(0, 1):
+            self.velocity -= 1
 
     def advance(self) -> None:
         """Actually apply changes staged by Car.step()."""
