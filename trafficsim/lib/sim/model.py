@@ -21,7 +21,7 @@ class World(mesa.Model):
     def __init__(self, width: int,
                  amount_of_agents: int,
                  max_velocity: int,
-                 p_break: float) -> None:
+                 p_brake: float) -> None:
         """Initialize class instance, and it's agents.
 
         Args:
@@ -45,7 +45,7 @@ class World(mesa.Model):
         agent_locations: np.ndarray = np.linspace(0, width, amount_of_agents, endpoint=False).astype(int)
 
         for loc in agent_locations:
-            a: agent.Car = agent.Car(self, p_brake=p_break)
+            a: agent.Car = agent.Car(self, p_brake=p_brake)
             self.schedule.add(a)
             self.grid.place_agent(a, (loc, 0))
 

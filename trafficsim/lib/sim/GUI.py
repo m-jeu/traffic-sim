@@ -1,5 +1,6 @@
 from mesa.visualization.modules import CanvasGrid
 from mesa.visualization.ModularVisualization import ModularServer
+from mesa.visualization.UserParam import UserSettableParameter
 
 from ..sim import model
 
@@ -35,9 +36,14 @@ def launch_gui():
                             "Traffic simulation",
                             {
                                 'width': width,
-                                'amount_of_agents': 5,
-                                'max_velocity': 5,
-                                'p_break': .05
+                                'amount_of_agents': UserSettableParameter(
+                                    'slider', 'N agents', value=5, min_value=1, max_value=width, step=1),
+                                'max_velocity': UserSettableParameter(
+                                    'slider', 'Max velocity', value=5, min_value=1, max_value=25, step=1),
+                                'p_brake': UserSettableParameter(
+                                    'slider', 'Probability braking', value=.05, min_value=0, max_value=1, step=.01)
                             }
                             )
     server.launch(port=8521)
+
+
