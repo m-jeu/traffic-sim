@@ -44,7 +44,7 @@ class World(mesa.Model):
         agent_locations: np.ndarray = np.linspace(0, width, amount_of_agents, endpoint=False).astype(int)
 
         for loc in agent_locations:
-            a: agent.Car = agent.Car(self)
+            a: agent.Car = agent.Car(self, p_brake=0.05)
             self.schedule.add(a)
             self.grid.place_agent(a, (loc, 0))
 
