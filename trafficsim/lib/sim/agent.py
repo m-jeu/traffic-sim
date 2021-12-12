@@ -32,7 +32,7 @@ class Car(mesa.Agent):
             self.velocity = distance
 
         # 3. Speed of all cars that have a velocity of at least 1, is now reduced by one unit with a probability of p.
-        if self.p_breaking >= self.model.random.uniform(0, 1):
+        if self.p_breaking >= self.model.random.uniform(0, 1) and self.velocity >= 1:
             self.velocity -= 1
 
     def advance(self) -> None:
