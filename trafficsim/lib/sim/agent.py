@@ -18,11 +18,11 @@ class Car(mesa.Agent):
         self.model: model.World = m
 
         self.velocity: int = 0  # speed
-        self.distance_to_front_car = float('inf')  # distance in cell units to next car
         self.p_breaking: float = p_brake  # probability of braking
 
     def step(self) -> None:
         """Apply logic (like perceive) and stage changes for the next tick."""
+
         # 1. Acceleration: Cars not at the maximum velocity have their velocity increased by one unit.
         if self.velocity < self.model.max_velocity:
             self.velocity += 1
@@ -35,11 +35,12 @@ class Car(mesa.Agent):
         """Actually apply changes staged by Car.step()."""
         self.model.grid.move_agent(self, (self.pos[0] + self.velocity, self.pos[1]))
 
-    def perceive(self) -> None:  # TODO(m-jeu): Untested!
+    def perceive(self) -> int or None:  # TODO(m-jeu): Untested!
         """Perceive the environment, in front of the car."""
         x_self, _ = self.pos
-        coords = [(x, 0) for x in range(x_self + 1, x_self + self.velocity)]
-        position_is_empty = enumerate(map(lambda c: self.model.grid.is_cell_empty(c), coords))
+        coords = [(x, 0) for x in range(x_self + 1, x_self + self.velocity + 1)]
+        position_is_empty = enumerate(map(lambda c: self.model.grid.is_cell_empty(c),
+                                          map(self.model.grid.torus_adj, coords)))
         for dist, is_empty in position_is_empty:
             if not is_empty:
                 return dist
