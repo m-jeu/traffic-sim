@@ -49,8 +49,7 @@ class Car(mesa.Agent):
         """Perceive the environment, in front of the car."""
         x_self, _ = self.pos
         coords = [(x, 0) for x in range(x_self + 1, x_self + self.velocity + 1)]
-        position_is_empty = enumerate(map(self.model.grid.is_cell_empty,
-                                          map(self.model.grid.torus_adj, coords)))
+        position_is_empty = enumerate(map(self.model.grid.is_cell_empty, map(self.model.grid.torus_adj, coords)))
         for dist, is_empty in position_is_empty:
             if not is_empty:
                 return dist
