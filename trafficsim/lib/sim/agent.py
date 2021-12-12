@@ -11,7 +11,7 @@ import mesa
 class Car(mesa.Agent):
     """Vroom vroom."""
 
-    def __init__(self, m: model.World) -> None:
+    def __init__(self, m: model.World, p_brake) -> None:
         super().__init__(m.next_id(), m)
 
         # overwrite self.model with proper type World instead of Model
@@ -19,17 +19,21 @@ class Car(mesa.Agent):
 
         self.velocity: int = 0  # speed
         self.distance_to_front_car = float('inf')  # distance in cell units to next car
+        self.p_breaking: float = p_brake  # probability of braking
 
     def step(self) -> None:
         """Apply logic (like perceive) and stage changes for the next tick."""
-        # 1
+        # 1. Acceleration: Cars not at the maximum velocity have their velocity increased by one unit.
         if self.velocity < self.model.max_velocity:
             self.velocity += 1
 
+        # 3 Speed of all cars that have a velocity of at least 1, is now reduced by one unit with a probability of p.
+        if self.p_breaking >= self.model.random.uniform(0, 1):
+            self.velocity -= 1
 
     def advance(self) -> None:
         """Actually apply changes staged by Car.step()."""
-        self.model.grid.move_agent(self, (self.pos[0]+self.velocity, self.pos[1]))
+        self.model.grid.move_agent(self, (self.pos[0] + self.velocity, self.pos[1]))
 
     def perceive(self) -> None:  # TODO(m-jeu): Untested!
         """Perceive the environment, in front of the car."""
