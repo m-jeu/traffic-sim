@@ -36,7 +36,7 @@ def launch_gui():
                                'width': width,
                                'amount_of_agents': 5,
                                'max_velocity': 5,
-                               'p_break': .5
+                               'p_break': .05
                            }
                            )
     server.launch(port=8521)
