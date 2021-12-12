@@ -14,13 +14,13 @@ class Car(mesa.Agent):
     def __init__(self, m: model.World, p_brake) -> None:
         super().__init__(m.next_id(), m)
 
-        # overwrite self.model with proper type World instead of Model
+        # Overwrite self.model with proper type World instead of Model for type-hinting.
         self.model: model.World = m
 
-        self.velocity: int = 0  # speed
-        self.p_breaking: float = p_brake  # probability of braking
+        self.velocity: int = 0  # Speed (cells per step)
+        self.p_breaking: float = p_brake  # Probability of braking
 
-        # temporary color (RGB) to distinguish cars in the simulation. ex: (255, 10, 20)
+        # Temporary color (RGB) to distinguish cars in the simulation. ex: (255, 10, 20)
         self.color = tuple([self.model.random.randint(0, 255) for i in range(3)])
 
     def step(self) -> None:
