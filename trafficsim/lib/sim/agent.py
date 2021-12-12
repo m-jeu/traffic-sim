@@ -18,7 +18,7 @@ class Car(mesa.Agent):
         self.model: model.World = m
 
         self.velocity: int = 0  # Speed (cells per step)
-        self.p_breaking: float = p_brake  # Probability of braking
+        self.p_brake: float = p_brake  # Probability of braking
 
         # Temporary color (RGB) to distinguish cars in the simulation. ex: (255, 10, 20)
         self.color = tuple([self.model.random.randint(0, 255) for i in range(3)])
@@ -38,7 +38,7 @@ class Car(mesa.Agent):
 
         # 3. Randomization:
         # Speed of all cars that have a velocity of at least 1, is now reduced by one unit with a probability of p.
-        if self.p_breaking >= self.model.random.uniform(0, 1) and self.velocity >= 1:
+        if self.p_brake >= self.model.random.uniform(0, 1) and self.velocity >= 1:
             self.velocity -= 1
 
     def advance(self) -> None:
