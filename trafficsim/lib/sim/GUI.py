@@ -34,8 +34,9 @@ def launch_gui():
                            "Traffic simulation",
                            {
                                'width': width,
-                               'amount_of_agents': 4,
-                               'max_velocity': 5
+                               'amount_of_agents': 25,
+                               'max_velocity': 5,
+                               'p_break': .5
                            }
                            )
     server.launch(port=8521)
