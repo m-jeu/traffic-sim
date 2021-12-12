@@ -50,7 +50,7 @@ class World(mesa.Model):
 
     def step(self) -> None:
         """Continue the simulation by one tick."""
-        raise NotImplementedError()
+        self.schedule.step()
 
     def visualize(self) -> None:
         raise NotImplementedError()
