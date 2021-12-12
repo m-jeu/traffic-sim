@@ -35,7 +35,7 @@ class Car(mesa.Agent):
         """Actually apply changes staged by Car.step()."""
         self.model.grid.move_agent(self, (self.pos[0] + self.velocity, self.pos[1]))
 
-    def perceive(self) -> None:  # TODO(m-jeu): Untested!
+    def perceive(self) -> None or int:  # TODO(m-jeu): Untested!
         """Perceive the environment, in front of the car."""
         x_self, _ = self.pos
         coords = [(x, 0) for x in range(x_self + 1, x_self + self.velocity)]
