@@ -34,7 +34,7 @@ def launch_gui():
                            "Traffic simulation",
                            {
                                'width': width,
-                               'amount_of_agents': 25,
+                               'amount_of_agents': 5,
                                'max_velocity': 5,
                                'p_break': .5
                            }
