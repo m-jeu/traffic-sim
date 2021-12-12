@@ -37,6 +37,7 @@ class Car(mesa.Agent):
 
     def advance(self) -> None:
         """Actually apply changes staged by Car.step()."""
+        # 4. Car motion: cars are moved forward the number of cells equal to their velocity.
         self.model.grid.move_agent(self, (self.pos[0] + self.velocity, self.pos[1]))
 
     def perceive(self) -> None or int:  # TODO(m-jeu): Untested!
