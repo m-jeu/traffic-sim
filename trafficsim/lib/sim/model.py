@@ -20,7 +20,7 @@ class World(mesa.Model):
 
     def __init__(self, width: int,
                  amount_of_agents: int,
-                 max_speed: int) -> None:
+                 max_velocity: int) -> None:
         """Initialize class instance, and it's agents.
 
         Args:
@@ -35,7 +35,7 @@ class World(mesa.Model):
         # Initialize world parameters
         self.schedule: mesa.time.SimultaneousActivation = mesa.time.SimultaneousActivation(self)
         self.grid: mesa.space.SingleGrid = mesa.space.SingleGrid(width, 1, torus=True)
-        self.max_speed: int = max_speed
+        self.max_velocity: int = max_velocity
 
         # Initialize agents
         if amount_of_agents > width:
