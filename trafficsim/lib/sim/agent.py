@@ -13,15 +13,23 @@ class Car(mesa.Agent):
 
     def __init__(self, m: model.World) -> None:
         super().__init__(m.next_id(), m)
-        # Add speed and other attributes here.
+
+        # overwrite self.model with proper type World instead of Model
+        self.model: model.World = m
+
+        self.velocity: int = 0  # speed
+        self.distance_to_front_car = float('inf')  # distance in cell units to next car
 
     def step(self) -> None:
         """Apply logic (like perceive) and stage changes for the next tick."""
-        raise NotImplementedError()
+        # 1
+        if self.velocity < self.model.max_velocity:
+            self.velocity += 1
+
 
     def advance(self) -> None:
         """Actually apply changes staged by Car.step()."""
-        raise NotImplementedError()
+        self.model.grid.move_agent(self, (self.pos[0]+self.velocity, self.pos[1]))
 
     def perceive(self) -> None:
         """Perceive the environment, in front of the car."""
