@@ -52,8 +52,11 @@ class Car(mesa.Agent):
     def perceive(self) -> None or int:  # TODO(m-jeu): Untested!
         """Perceive the environment, in front of the car."""
         x_self, _ = self.pos
+        # Fetch coordinates ahead of the car equal to the car's velocity.
         coords = [(x, 0) for x in range(x_self + 1, x_self + self.velocity + 1)]
+        # Transform the coordinates to torus-compliant coordinates and check whether those coordinates are empty.
         position_is_empty = enumerate(map(self.model.grid.is_cell_empty, map(self.model.grid.torus_adj, coords)))
+        # Return the distance of the first non-empty cell, or None.
         for dist, is_empty in position_is_empty:
             if not is_empty:
                 return dist
