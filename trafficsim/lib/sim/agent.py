@@ -9,9 +9,22 @@ import mesa
 
 
 class Car(mesa.Agent):
-    """Vroom vroom."""
+    """A Car (agent), which represents a car according to the Nagel-Schreckenberg Model.
+
+    Attributes:
+        model: The simulation which the car lives in.
+        grid: The velocity (speed) of the car.
+        p_brake: The probability of braking without reason.
+        color: The color of a car in RGB format.
+    """
 
     def __init__(self, m: model.World, p_brake) -> None:
+        """Initialize class instance.
+
+        Args:
+            m: The simulation which the car lives in.
+            p_brake: The probability of braking without reason.
+        """
         super().__init__(m.next_id(), m)
 
         # Overwrite self.model with proper type World instead of Model for type-hinting.
