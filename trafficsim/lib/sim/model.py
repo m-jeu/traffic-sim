@@ -5,7 +5,7 @@ import mesa.time
 import mesa.space
 import numpy as np
 
-from ..sim import agent  # TODO(m-jeu): Check whether these imports make sense.
+from ..sim import agent
 
 
 class World(mesa.Model):
