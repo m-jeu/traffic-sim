@@ -16,7 +16,7 @@ class Car(mesa.Agent):
         color: The color of a car in RGB format.
     """
 
-    def __init__(self, m: model.World, p_brake) -> None:
+    def __init__(self, m: model.World, p_brake: float) -> None:
         """Initialize class instance.
 
         Args:
