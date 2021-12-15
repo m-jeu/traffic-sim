@@ -3,7 +3,9 @@ from __future__ import annotations
 import mesa
 import mesa.time
 import mesa.space
+import mesa.datacollection
 import numpy as np
+
 
 from ..sim import agent
 
@@ -16,7 +18,9 @@ class World(mesa.Model):
     Attributes:
         schedule: mesa scheduler that activates the correct agent methods to run the simulation.
         grid: the grid (currently 1D) that agents are placed on.
-        max_velocity: maximum speed cars are allowed to travel at."""
+        max_velocity: maximum speed cars are allowed to travel at.
+        data_collector:
+            mesa data collector that keeps track of both agent level and model level variables."""
 
     def __init__(self, width: int,
                  amount_of_agents: int,
@@ -49,8 +53,16 @@ class World(mesa.Model):
             self.schedule.add(a)
             self.grid.place_agent(a, (loc, 0))
 
+        # Initialize data collector
+        self.data_collector: mesa.datacollection.DataCollector = mesa.datacollection.DataCollector(
+            agent_reporters={
+                "Velocity": "velocity"  # Keep track of velocity on agent-level.
+            }
+        )
+
     def step(self) -> None:
         """Continue the simulation by one tick."""
+        self.datacollecter.collect(self)
         self.schedule.step()
 
     def visualize(self) -> None:
