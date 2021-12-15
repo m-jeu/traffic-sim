@@ -62,7 +62,7 @@ class World(mesa.Model):
 
     def step(self) -> None:
         """Continue the simulation by one tick."""
-        self.datacollecter.collect(self)
+        self.data_collector.collect(self)
         self.schedule.step()
 
     def visualize(self) -> None:
