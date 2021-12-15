@@ -60,7 +60,7 @@ class Car(mesa.Agent):
         new_x = self_x + self.velocity  # new x is current x + velocity
         self.model.grid.move_agent(self, pos=(new_x, self_y))
 
-    def perceive(self) -> None or int:  # TODO(m-jeu): Untested!
+    def perceive(self) -> None or int:
         """Perceive the environment, in front of the car."""
         x_self, _ = self.pos
         # Fetch coordinates ahead of the car equal to the car's velocity.
