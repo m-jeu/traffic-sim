@@ -33,7 +33,6 @@ chart = ChartModule([{"Label": "Average velocity",
                       "Color": "Black"}],
                     data_collector_name='data_collector')
 
-
 def launch_gui():
     server = ModularServer(
         model.World,
