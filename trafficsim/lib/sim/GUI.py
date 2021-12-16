@@ -1,7 +1,7 @@
 from mesa.visualization.modules import CanvasGrid
 from mesa.visualization.ModularVisualization import ModularServer
 from mesa.visualization.UserParam import UserSettableParameter
-
+from mesa.visualization.modules import ChartModule
 from ..sim import model
 
 
@@ -29,11 +29,13 @@ grid = CanvasGrid(
     canvas_height=50
 )
 
-
+chart = ChartModule([{"Label": "Average velocity",
+                      "Color": "Black"}],
+                    data_collector_name='data_collector')
 def launch_gui():
     server = ModularServer(
         model.World,
-        [grid],
+        [grid,chart],
         "Traffic simulation",
         {
             'width': width,
