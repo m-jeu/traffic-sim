@@ -30,7 +30,7 @@ class World(mesa.Model):
 
         Args:
             width: width of the lane.
-            density: density of Car agents to place on the grid.
+            density: density of Cars per grid cell.
             max_velocity: max_velocity attribute.
 
         Raises:
@@ -59,6 +59,11 @@ class World(mesa.Model):
         self.data_collector: mesa.datacollection.DataCollector = mesa.datacollection.DataCollector(
             agent_reporters={
                 "Velocity": "velocity"  # Keep track of velocity on agent-level.
+            },
+            model_reporters={
+                # Keep track of average velocity over all agents per timestep on model-level.
+                # TODO(m-jeu):Un-lambda.
+                "Average Velocity": lambda m: np.array([agent.velocity for agent in m.schedule.agents]).mean()
             }
         )
 
