@@ -23,19 +23,21 @@ class World(mesa.Model):
             mesa data collector that keeps track of both agent level and model level variables."""
 
     def __init__(self, width: int,
-                 amount_of_agents: int,
+                 density: float,
                  max_velocity: int,
                  p_brake: float) -> None:
         """Initialize class instance, and it's agents.
 
         Args:
             width: width of the lane.
-            amount_of_agents: amount of Car agents to place on the grid.
+            density: density of Car agents to place on the grid.
             max_velocity: max_velocity attribute.
 
         Raises:
             ValueError if amount_of_agents exceeds width."""
         super().__init__()
+
+        amount_of_agents = round(density * width)
 
         # Initialize world parameters
         self.schedule: mesa.time.SimultaneousActivation = mesa.time.SimultaneousActivation(self)
