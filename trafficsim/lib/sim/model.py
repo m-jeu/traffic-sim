@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import symtable
+
 import mesa
 import mesa.time
 import mesa.space
@@ -62,8 +64,7 @@ class World(mesa.Model):
             },
             model_reporters={
                 # Keep track of average velocity over all agents per timestep on model-level.
-                # TODO(m-jeu):Un-lambda.
-                "Average Velocity": lambda m: np.array([agent.velocity for agent in m.schedule.agents]).mean()
+                "Average velocity": World.average_agent_velocity
             }
         )
 
@@ -74,3 +75,7 @@ class World(mesa.Model):
 
     def visualize(self) -> None:
         raise NotImplementedError()
+
+    def average_agent_velocity(self) -> float:
+        return sum([agent.velocity for agent in self.schedule.agents]) / len(self.schedule.agents)
+
