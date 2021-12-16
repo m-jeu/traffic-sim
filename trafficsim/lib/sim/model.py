@@ -30,14 +30,14 @@ class World(mesa.Model):
 
         Args:
             width: width of the lane.
-            density: density of Cars per grid cell.
+            density: density of cars per grid cell.
             max_velocity: max_velocity attribute.
 
         Raises:
             ValueError if amount_of_agents exceeds width."""
         super().__init__()
 
-        amount_of_agents = round(density * width)
+        amount_of_agents: int = round(density * width)
 
         # Initialize world parameters
         self.schedule: mesa.time.SimultaneousActivation = mesa.time.SimultaneousActivation(self)
