@@ -11,8 +11,9 @@ def agent_portrayal(agent):
         "Filled": "true",
         "Layer": 0,
         "Color": f"rgb{agent.color}",
-        "w": 1,
-        "h": 1
+        "Velocity": f"{agent.velocity}",
+        "w": .7,
+        "h": .25
     }
     return portrayal
 
@@ -24,8 +25,8 @@ grid = CanvasGrid(
     portrayal_method=agent_portrayal,
     grid_width=width,
     grid_height=1,
-    canvas_width=width * cell_size,
-    canvas_height=cell_size
+    canvas_width=1100,
+    canvas_height=50
 )
 
 
