@@ -32,16 +32,18 @@ grid = CanvasGrid(
 chart = ChartModule([{"Label": "Average velocity",
                       "Color": "Black"}],
                     data_collector_name='data_collector')
+
+
 def launch_gui():
     server = ModularServer(
         model.World,
-        [grid,chart],
+        [grid, chart],
         "Traffic simulation",
         {
             'width': width,
             'density': UserSettableParameter(
                 # start value = 1 / (max velocity + 1)
-                'slider', 'Density of cars on the road', value=1/(5 + 1), min_value=0, max_value=1, step=.01),
+                'slider', 'Density of cars on the road', value=1 / (5 + 1), min_value=0, max_value=1, step=1/width),
             'max_velocity': UserSettableParameter(
                 'slider', 'Max velocity', value=5, min_value=1, max_value=25, step=1),
             'p_brake': UserSettableParameter(
