@@ -77,6 +77,5 @@ class World(mesa.Model):
         raise NotImplementedError()
 
     def average_agent_velocity(self) -> float:
-        print(self.schedule)
         return sum([agent.velocity for agent in self.schedule.agents]) / len(self.schedule.agents)
 
