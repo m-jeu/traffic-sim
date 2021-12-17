@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import symtable
 
 import mesa
 import mesa.time
