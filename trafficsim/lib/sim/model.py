@@ -32,13 +32,16 @@ class World(mesa.Model):
     def __init__(self, width: int,
                  density: float,
                  max_velocity: int,
-                 p_brake: float) -> None:
+                 p_brake: float,
+                 car_cls: type = agent.Car) -> None:
         """Initialize class instance, and it's agents.
 
         Args:
             width: width of the lane.
             density: density of cars per grid cell.
             max_velocity: max_velocity attribute.
+            p_brake: TODO(m-jeu)
+            car_cls: TODO(m-jeu)
 
         Raises:
             ValueError if amount_of_agents exceeds width."""
@@ -58,7 +61,7 @@ class World(mesa.Model):
         agent_locations: np.ndarray = np.linspace(0, width, amount_of_agents, endpoint=False).astype(int)
 
         for loc in agent_locations:
-            a: agent.Car = agent.Car(self, p_brake=p_brake)
+            a: agent.Car = car_cls(self, p_brake=p_brake)
             self.schedule.add(a)
             self.grid.place_agent(a, (loc, 0))
 
