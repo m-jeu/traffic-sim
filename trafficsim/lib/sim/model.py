@@ -5,10 +5,16 @@ import mesa
 import mesa.time
 import mesa.space
 import mesa.datacollection
+import mesa.batchrunner
 import numpy as np
+import pandas as pd
 
 
 from ..sim import agent
+
+
+DEFAULT_WIDTH: int = 50        # 'Cells'.
+DEFAULT_MAX_VELOCITY: int = 5  # 'Cells' per time step.
 
 
 class World(mesa.Model):
@@ -77,4 +83,28 @@ class World(mesa.Model):
 
     def average_agent_velocity(self) -> float:
         return sum([agent.velocity for agent in self.schedule.agents]) / len(self.schedule.agents)
+
+    @classmethod
+    def experiment(cls):  # TODO(m-jeu): Make modular.
+        batch_runner: mesa.batchrunner.BatchRunner = mesa.batchrunner.BatchRunner(
+            cls,
+            variable_parameters={
+                "density": np.linspace(0, 1, DEFAULT_WIDTH)[1:],
+                "p_brake": np.linspace(0, 1, 10)
+            },
+            fixed_parameters={
+                "width": DEFAULT_WIDTH,
+                "max_velocity": DEFAULT_MAX_VELOCITY
+            },
+            iterations=1,
+            max_steps=10,
+            model_reporters={
+                "Average Velocity": lambda m: m.data_collector.get_model_vars_dataframe()["Average velocity"]
+            }
+        )
+
+        batch_runner.run_all()
+
+        return batch_runner.get_model_vars_dataframe()
+
 
