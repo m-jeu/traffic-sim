@@ -34,32 +34,6 @@ class Car(mesa.Agent):
         # Temporary color (RGB) to distinguish cars in the simulation. ex: (255, 10, 20)
         self.color = tuple([self.model.random.randint(0, 255) for i in range(3)])
 
-    def step(self) -> None:
-        """Apply logic (like perceive) and stage changes for the next tick."""
-        # 1. Acceleration:
-        # Cars not at the maximum velocity have their velocity increased by one unit.
-        if self.velocity < self.model.max_velocity:
-            self.velocity += 1
-
-        # 2. Slowing down:
-        # If the distance is smaller than the velocity, the velocity is reduced to the distance.
-        distance = self.perceive()
-        if distance is not None and distance < self.velocity:
-            self.velocity = distance
-
-        # 3. Randomization:
-        # Speed of all cars that have a velocity of at least 1, is now reduced by one unit with a probability of p.
-        if self.p_brake >= self.model.random.uniform(0, 1) and self.velocity >= 1:
-            self.velocity -= 1
-
-    def advance(self) -> None:
-        """Actually apply changes staged by Car.step()."""
-        # 4. Car motion:
-        # cars are moved forward the number of cells equal to their velocity.
-        self_x, self_y = self.pos
-        new_x = self_x + self.velocity  # new x is current x + velocity
-        self.model.grid.move_agent(self, pos=(new_x, self_y))
-
     def perceive(self) -> None or int:
         """Perceive the environment, in front of the car."""
         x_self, _ = self.pos
@@ -73,6 +47,35 @@ class Car(mesa.Agent):
                 return dist
         return None
 
-    def act(self) -> None:
-        """Apply the information from perceive, and take an action according to it."""
-        raise NotImplementedError()
+    def _accelerate(self):
+        # 1. Acceleration:
+        # Cars not at the maximum velocity have their velocity increased by one unit.
+        if self.velocity < self.model.max_velocity:
+            self.velocity += 1
+
+    def _slow_down(self):
+        # 2. Slowing down:
+        # If the distance is smaller than the velocity, the velocity is reduced to the distance.
+        distance = self.perceive()
+        if distance is not None and distance < self.velocity:
+            self.velocity = distance
+
+    def _random_brake(self):
+        # 3. Randomization:
+        # Speed of all cars that have a velocity of at least 1, is now reduced by one unit with a probability of p.
+        if self.p_brake >= self.model.random.uniform(0, 1) and self.velocity >= 1:
+            self.velocity -= 1
+
+    def step(self) -> None:
+        """Apply logic (like perceive) and stage changes for the next tick."""
+        self._accelerate()  # rule 1
+        self._slow_down()  # rule 2
+        self._random_brake()  # rule 3
+
+    def advance(self) -> None:
+        """Actually apply changes staged by Car.step()."""
+        # 4. Car motion:
+        # cars are moved forward the number of cells equal to their velocity.
+        self_x, self_y = self.pos
+        new_x = self_x + self.velocity  # new x is current x + velocity
+        self.model.grid.move_agent(self, pos=(new_x, self_y))
