@@ -87,7 +87,10 @@ class World(mesa.Model):
     def experiment(cls,
                    p_brake_permutations: int = 10,
                    width: int = 50,
-                   max_velocity: int = 5):  # TODO(m-jeu): Make modular.
+                   max_velocity: int = 5,
+                   ) -> pd.DataFrame:
+
+        # Create and run the batch runner.
         batch_runner: mesa.batchrunner.BatchRunner = mesa.batchrunner.BatchRunner(
             cls,
             variable_parameters={
@@ -98,15 +101,19 @@ class World(mesa.Model):
                 "width": width,
                 "max_velocity": max_velocity
             },
-            iterations=1,
-            max_steps=10,
+            iterations=10,
+            max_steps=100,
             model_reporters={
-                "Average Velocity": lambda m: m.data_collector.get_model_vars_dataframe()["Average velocity"]
+                "data collector": lambda m: m.data_collector  # Grab the data collector from every run.
             }
         )
-
         batch_runner.run_all()
 
-        return batch_runner.get_model_vars_dataframe()
+        df = batch_runner.get_model_vars_dataframe()
 
+        # TODO(m-jeu): Move to seperate function, method, or something else.
+        # Take the mean of every average velocity from data collector.
+        df["simulation average velocity"] = df["data collector"].apply(lambda dc: dc.get_model_vars_dataframe().mean())
+
+        return df
 
