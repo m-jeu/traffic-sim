@@ -13,10 +13,6 @@ import pandas as pd
 from ..sim import agent
 
 
-DEFAULT_WIDTH: int = 50        # 'Cells'.
-DEFAULT_MAX_VELOCITY: int = 5  # 'Cells' per time step.
-
-
 class World(mesa.Model):
     """A world, in which vehicles move according to the Nagel-Schreckenberg Model.
 
@@ -88,16 +84,19 @@ class World(mesa.Model):
         return sum([agent.velocity for agent in self.schedule.agents]) / len(self.schedule.agents)
 
     @classmethod
-    def experiment(cls):  # TODO(m-jeu): Make modular.
+    def experiment(cls,
+                   p_brake_permutations: int = 10,
+                   width: int = 50,
+                   max_velocity: int = 5):  # TODO(m-jeu): Make modular.
         batch_runner: mesa.batchrunner.BatchRunner = mesa.batchrunner.BatchRunner(
             cls,
             variable_parameters={
-                "density": np.linspace(0, 1, DEFAULT_WIDTH)[1:],
-                "p_brake": np.linspace(0, 1, 10)
+                "density": np.linspace(0, 1, width)[1:],  # Density of 0 cars per cell causes problems.
+                "p_brake": np.linspace(0, 1, p_brake_permutations)
             },
             fixed_parameters={
-                "width": DEFAULT_WIDTH,
-                "max_velocity": DEFAULT_MAX_VELOCITY
+                "width": width,
+                "max_velocity": max_velocity
             },
             iterations=1,
             max_steps=10,
