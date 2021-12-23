@@ -1,4 +1,4 @@
 import trafficsim
 
 if __name__ == "__main__":
-    trafficsim.launch_gui()
+    trafficsim.launch_gui(multi_lane=True)

@@ -29,7 +29,8 @@ class World(mesa.Model):
                  density: float,
                  max_velocity: int,
                  p_brake: float,
-                 car_cls: type = agent.Car) -> None:
+                 car_cls: type = agent.Car,
+                 ) -> None:
         """Initialize class instance, and it's agents.
 
         Args:
@@ -46,20 +47,26 @@ class World(mesa.Model):
         amount_of_agents: int = round(density * width)
 
         # Initialize world parameters
-        self.schedule: mesa.time.SimultaneousActivation = mesa.time.SimultaneousActivation(self)
-        self.grid: mesa.space.SingleGrid = mesa.space.SingleGrid(width, 1, torus=True)
+        if car_cls == agent.AdvancedCar:
+            self.schedule: mesa.time.StagedActivation = mesa.time.StagedActivation(self, ['step_lane_change', 'step','advance'])
+            grid_height = 2
+            # todo fix spacing
+        else:
+            self.schedule: mesa.time.SimultaneousActivation = mesa.time.SimultaneousActivation(self)
+            grid_height = 1
+        agent_locations: np.ndarray = np.linspace((0, 0), (width, 0), amount_of_agents, endpoint=False).astype(int)
+
+        self.grid: mesa.space.SingleGrid = mesa.space.SingleGrid(width, grid_height, torus=True)
         self.max_velocity: int = max_velocity
 
         # Initialize agents
         if amount_of_agents > width:
             raise ValueError(f"Amount of agents {amount_of_agents} may not exceed world width {width}.")
 
-        agent_locations: np.ndarray = np.linspace(0, width, amount_of_agents, endpoint=False).astype(int)
-
         for loc in agent_locations:
             a: agent.Car = car_cls(self, p_brake=p_brake)
             self.schedule.add(a)
-            self.grid.place_agent(a, (loc, 0))
+            self.grid.place_agent(a, tuple(loc))
 
         # Initialize data collector
         self.data_collector: mesa.datacollection.DataCollector = mesa.datacollection.DataCollector(
