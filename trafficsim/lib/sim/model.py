@@ -47,7 +47,7 @@ class World(mesa.Model):
         amount_of_agents: int = round(density * width)
 
         # Initialize world parameters
-        if car_cls == agent.AdvancedCar:
+        if car_cls == agent.TwoLaneCar:
             self.schedule: mesa.time.StagedActivation = mesa.time.StagedActivation(self, ['step_lane_change', 'step','advance'])
             grid_height = 2
             # todo fix spacing
