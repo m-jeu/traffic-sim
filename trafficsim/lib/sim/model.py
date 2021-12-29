@@ -25,7 +25,6 @@ class _Road(mesa.Model, metaclass=abc.ABCMeta):
                  p_brake: float = .0) -> None:
         super().__init__()
 
-        # Initialize attributes that are the same for every type of road.
         self.max_velocity: int = max_velocity
         self.p_brake: float = p_brake
         self.lane_length: int = lane_length
@@ -99,7 +98,7 @@ class OneLaneRoad(_Road):
 
 
 class TwoLaneRoad(_Road):
-    AGENT_CLASS: type = agent.AdvancedCar
+    AGENT_CLASS: type = agent.TwoLaneCar
 
     def _grid(self, lane_length: int) -> mesa.space.Grid:
         self.grid: mesa.space.SingleGrid = mesa.space.SingleGrid(lane_length, 2, torus=True)
