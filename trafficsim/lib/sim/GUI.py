@@ -50,7 +50,7 @@ def launch_gui(multi_lane=False):
             'p_brake': UserSettableParameter(
                 'slider', 'Probability of braking', value=.05, min_value=0, max_value=1, step=.01
             ),
-            'car_cls': agent.AdvancedCar if multi_lane else agent.Car
+            'car_cls': agent.TwoLaneCar if multi_lane else agent.Car
         }
     )
     server.launch(port=8521)
