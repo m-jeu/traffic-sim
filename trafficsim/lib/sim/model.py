@@ -90,37 +90,3 @@ class World(mesa.Model):
     def average_agent_velocity(self) -> float:
         return sum([agent.velocity for agent in self.schedule.agents]) / len(self.schedule.agents)
 
-    @classmethod
-    def experiment(cls,
-                   p_brake_permutations: int = 10,
-                   width: int = 50,
-                   max_velocity: int = 5,
-                   ) -> pd.DataFrame:
-
-        # Create and run the batch runner.
-        batch_runner: mesa.batchrunner.BatchRunner = mesa.batchrunner.BatchRunner(
-            cls,
-            variable_parameters={
-                "density": np.linspace(0, 1, width)[1:],  # Density of 0 cars per cell causes problems.
-                "p_brake": np.linspace(0, 1, p_brake_permutations)
-            },
-            fixed_parameters={
-                "width": width,
-                "max_velocity": max_velocity
-            },
-            iterations=10,
-            max_steps=100,
-            model_reporters={
-                "data collector": lambda m: m.data_collector  # Grab the data collector from every run.
-            }
-        )
-        batch_runner.run_all()
-
-        df = batch_runner.get_model_vars_dataframe()
-
-        # TODO(m-jeu): Move to seperate function, method, or something else.
-        # Take the mean of every average velocity from data collector.
-        df["simulation average velocity"] = df["data collector"].apply(lambda dc: dc.get_model_vars_dataframe().mean())
-
-        return df
-
