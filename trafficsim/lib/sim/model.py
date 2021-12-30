@@ -9,7 +9,6 @@ import mesa.space
 import mesa.datacollection
 import mesa.batchrunner
 import numpy as np
-import pandas as pd
 
 
 from ..sim import agent
@@ -31,12 +30,13 @@ class _Road(mesa.Model, metaclass=abc.ABCMeta):
 
         # TODO(m-jeu): Remove parameters from these methods and access through attributes
         # Initialize attributes specific to subclass.
-        self.grid: mesa.space.Grid = self._grid(lane_length)
-        self.schedule: mesa.time.BaseScheduler = self._schedule()
+        self._grid(lane_length)
+        self._schedule()
         self.CELL_AMOUNT: int = self._cell_amount(lane_length)
 
         # Initialize agents.
         agent_locations: np.ndarray = self._agent_locations(agents_n)
+
         for loc in agent_locations:
             a: agent.Car = self.AGENT_CLASS(self, p_brake=p_brake)  # TODO(m-jeu): p_brake passed to car, but max V isn't?
             self.schedule.add(a)
@@ -100,6 +100,15 @@ class OneLaneRoad(_Road):
 class TwoLaneRoad(_Road):
     AGENT_CLASS: type = agent.TwoLaneCar
 
+    def __init__(self,
+                 agents_n: int,
+                 lane_length: int,
+                 max_velocity: int = 5,
+                 p_brake: float = .0,
+                 p_change: float = 1.0):
+        super().__init__(agents_n, lane_length, max_velocity, p_brake)
+        self.p_change = p_change
+
     def _grid(self, lane_length: int) -> mesa.space.Grid:
         self.grid: mesa.space.SingleGrid = mesa.space.SingleGrid(lane_length, 2, torus=True)
         self._CELL_AMOUNT: int = lane_length * 2
@@ -116,15 +125,19 @@ class TwoLaneRoad(_Road):
         |  x  x  x  x|
         ______________
         """
-        x_positions_top: np.ndarray = np.linspace(0, self.lane_length, amount_of_agents, endpoint=False).astype(int)
+        n_top = amount_of_agents//2
+        n_bot = amount_of_agents - n_top
+
+        x_positions_top: np.ndarray = np.linspace(0, self.lane_length, n_top, endpoint=False).astype(int)
+        x_positions_bot: np.ndarray = np.linspace(0, self.lane_length, n_bot, endpoint=False).astype(int) - (
+                    self.lane_length - 1)
 
         # Flip x-positions for bottom lane
-        x_positions_bot: np.ndarray = (self.lane_length - 1) - x_positions_top
+        #x_positions_bot: np.ndarray = (self.lane_length - 1) - x_positions_top
 
         top = map(lambda x: (x, 0), x_positions_top)
         bottom = map(lambda x: (x, 1), x_positions_bot)
-
-        return np.ndarray(top).append(np.array(bottom))
+        return np.array([*list(top), *list(bottom)])
 
     def _cell_amount(self, lane_length: int) -> int:
         return lane_length * 2
