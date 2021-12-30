@@ -44,9 +44,6 @@ class _Road(mesa.Model, metaclass=abc.ABCMeta):
 
         # Initialize data collector.
         self.data_collector: mesa.datacollection.DataCollector = mesa.datacollection.DataCollector(
-            agent_reporters={
-                "Velocity": "velocity"  # Keep track of velocity on agent-level.
-            },
             model_reporters={
                 # Keep track of average velocity over all agents per time step on model-level.
                 "Average velocity": self.average_agent_velocity
