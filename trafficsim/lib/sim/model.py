@@ -15,6 +15,17 @@ from ..sim import agent
 
 
 class _Road(mesa.Model, metaclass=abc.ABCMeta):
+    """Abstract road that implements a number of required features for agent-based simulation through mesa,
+    models like the Nagel Schreckenberg model and expansions thereof specifically.
+
+    Attributes:
+        AGENT_CLASS: (constant class attribute) class of agent associated with road type.
+        max_velocity: the maximum velocity in cells per timestep cars are allowed to go.
+        p_brake: the probability cars have to randomly lower their velocity by one every timestep.
+        lane_length: amount of cells a lane should be in the dimension that's not derermined by the type of road.
+        CELL_AMOUNT: Amount of cells on the road (primarily to calculate the density with).
+        schedule: """
+
     AGENT_CLASS: type = agent.Car  # Default.  TODO(m-jeu): Is this a bad idea?
 
     def __init__(self,
