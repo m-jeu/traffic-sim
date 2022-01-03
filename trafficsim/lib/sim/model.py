@@ -41,8 +41,8 @@ class _Road(mesa.Model, metaclass=abc.ABCMeta):
 
         # TODO(m-jeu): Remove parameters from these methods and access through attributes
         # Initialize attributes specific to subclass.
-        self._grid(lane_length)
-        self._schedule()
+        self.grid = self._grid(lane_length)
+        self.schedule = self._schedule()
         self.CELL_AMOUNT: int = self._cell_amount(lane_length)
 
         # Initialize agents.
@@ -90,11 +90,10 @@ class OneLaneRoad(_Road):
     AGENT_CLASS: type = agent.Car
 
     def _grid(self, lane_length: int) -> mesa.space.Grid:
-        self.grid: mesa.space.SingleGrid = mesa.space.SingleGrid(lane_length, 1, torus=True)
-        self._CELL_AMOUNT: int = lane_length
+        return mesa.space.SingleGrid(lane_length, 1, torus=True)
 
     def _schedule(self) -> mesa.time.BaseScheduler:
-        self.schedule: mesa.time.SimultaneousActivation = mesa.time.SimultaneousActivation(self)
+        return mesa.time.SimultaneousActivation(self)
 
     def _agent_locations(self, amount_of_agents: int) -> np.ndarray:
         return np.linspace(
@@ -118,13 +117,12 @@ class TwoLaneRoad(_Road):
         self.p_change = p_change
 
     def _grid(self, lane_length: int) -> mesa.space.Grid:
-        self.grid: mesa.space.SingleGrid = mesa.space.SingleGrid(lane_length, 2, torus=True)
-        self._CELL_AMOUNT: int = lane_length * 2
+        return mesa.space.SingleGrid(lane_length, 2, torus=True)
 
     def _schedule(self) -> mesa.time.BaseScheduler:
-        self.schedule: mesa.time.StagedActivation = mesa.time.StagedActivation(self,
-                                                                               ['step_lane_change', 'step', 'advance']
-                                                                               )
+        return mesa.time.StagedActivation(self,
+                                          ['step_lane_change', 'step', 'advance']
+                                          )
 
     def _agent_locations(self, amount_of_agents: int) -> np.ndarray:
         """
